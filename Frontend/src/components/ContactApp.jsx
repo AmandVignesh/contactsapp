@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Plus, Check, LogOut } from "lucide-react";
-
+import Loading from "./Loading";
 import ContactCard from "./ContactCard";
 import ContactForm from "./ContactForm";
 import SearchFilter from "./SearchFilter";
@@ -18,6 +18,7 @@ const ContactApp = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [deletingIds, setDeletingIds] = useState(new Set());
   const [notification, setNotification] = useState(null);
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
   const contactsPerPage = 6;
 
@@ -44,6 +45,7 @@ const ContactApp = () => {
   }, [searchTerm]);
 
   useEffect(() => {
+    setLoading(true)
     const fetchContacts = async () => {
       try {
         const token = Cookies.get("jwt_token");
@@ -58,6 +60,7 @@ const ContactApp = () => {
       } catch (err) {
         console.error("Error fetching contacts:", err);
       }
+      setLoading(false)
     };
 
     fetchContacts();
@@ -69,19 +72,21 @@ const ContactApp = () => {
   };
 
   const saveContact = (contactData) => {
-    setAllContacts((prevContacts) => {
-        const exists = prevContacts.some((c) => c._id === contactData._id);
-        if (exists) {
-        return prevContacts.map((c) =>
-            c._id === contactData._id ? contactData : c
-        );
-        } else {
-        return [...prevContacts, contactData];
-        }
+    setAllContacts((prev) => {
+      const exists = prev.some((c) => c._id === contactData._id);
+      return exists
+        ? prev.map((c) => (c._id === contactData._id ? contactData : c))
+        : [...prev, contactData];
     });
-    showNotification(contactData._id ? "Contact updated successfully!" : "Contact added successfully!");
+
+    showNotification(
+      editingContact
+        ? "Contact updated successfully!"
+        : "Contact added successfully!"
+    );
     closeForm();
-};
+  };
+
 
 
   const deleteContact = async (contactId) => {
@@ -198,7 +203,7 @@ const ContactApp = () => {
           />
         )}
 
-        {allContacts.length === 0 && <EmptyState onAddContact={addNewContact} />}
+        {loading ? <Loading/>: allContacts.length === 0 && <EmptyState onAddContact={addNewContact} />}
 
         {allContacts.length > 0 &&
           filteredContacts.length === 0 &&

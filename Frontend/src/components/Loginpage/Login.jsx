@@ -12,8 +12,9 @@ export default function LoginPage() {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
     setIsLoading(true);
+    e.preventDefault()
     setErrors({});
 
     if (!email || !password) {
@@ -65,7 +66,8 @@ export default function LoginPage() {
           Welcome Back
         </h1>
 
-        <div className="relative w-full mb-4">
+        <form onSubmit={handleLogin}>
+          <div className="relative w-full mb-4">
           <input
             name="email"
             type="email"
@@ -104,7 +106,7 @@ export default function LoginPage() {
         )}
 
         <button
-          onClick={handleLogin}
+          
           disabled={isLoading}
           className="w-full bg-purple-500 hover:bg-purple-600 p-3 mt-3 rounded-lg text-white font-medium flex items-center justify-center gap-2"
         >
@@ -120,6 +122,7 @@ export default function LoginPage() {
             Don't have an account? Sign Up
           </Link>
         </div>
+        </form>
       </div>
     </div>
   );
