@@ -5,7 +5,7 @@ import ContactCard from "./ContactCard";
 import ContactForm from "./ContactForm";
 import SearchFilter from "./SearchFilter";
 import Pagination from "./Pagination";
-import EmptyState from "./Emptystate";
+import EmptyState from "./EmptyState";
 import NoSearchResults from "./NoSearchResults";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
