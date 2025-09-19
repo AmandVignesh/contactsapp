@@ -34,13 +34,13 @@ const ContactForm = ({ contact, onSave, onClose }) => {
       if (contact) {
         
         response = await axios.put(
-          `http://localhost:3001/api/contacts/${contact._id}`,
+          `https://contactapp-6siq.onrender.com/api/contacts/${contact._id}`,
           formData,
           { headers: { Authorization: `Bearer ${token}` } }
         );
       } else {
         response = await axios.post(
-          "http://localhost:3001/api/contacts",
+          "https://contactapp-6siq.onrender.com/api/contacts",
           formData,
           { headers: { Authorization: `Bearer ${token}` } }
         );

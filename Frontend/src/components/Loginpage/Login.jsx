@@ -23,7 +23,7 @@ export default function LoginPage() {
     }
 
     try {
-      const res = await fetch("http://localhost:3001/api/users/login", {
+      const res = await fetch("https://contactapp-6siq.onrender.com/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

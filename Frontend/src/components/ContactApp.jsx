@@ -47,7 +47,7 @@ const ContactApp = () => {
     const fetchContacts = async () => {
       try {
         const token = Cookies.get("jwt_token");
-        const response = await fetch("http://localhost:3001/api/contacts", {
+        const response = await fetch("https://contactapp-6siq.onrender.com/api/contacts", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -90,7 +90,7 @@ const ContactApp = () => {
       setDeletingIds((prev) => new Set([...prev, contactId]));
 
       const response = await fetch(
-        `http://localhost:3001/api/contacts/${contactId}`,
+        `https://contactapp-6siq.onrender.com/api/contacts/${contactId}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },

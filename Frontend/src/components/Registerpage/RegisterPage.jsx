@@ -53,7 +53,7 @@ export default function RegisterPage() {
 
     try {
       
-      const response = await fetch("http://localhost:3001/api/users/register", {
+      const response = await fetch("https://contactapp-6siq.onrender.com/api/users/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password })
