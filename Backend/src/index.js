@@ -12,7 +12,7 @@ app.use(cors())
 app.use(express.json())
 
 
-const PORT =  3001
+const PORT =  process.env.PORT
 
 const url = process.env.MONGO_URL
 
