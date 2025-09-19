@@ -4,10 +4,6 @@ import jwt from "jsonwebtoken";
 
 export default async function protect(req, res, next) {
   let token;
-  console.log("backend",req.body)
-  console.log("token ", req.headers.authorization)
-  
-
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
@@ -20,7 +16,6 @@ export default async function protect(req, res, next) {
         res.status(401);
         throw new Error("User is not Authorized");
       }
-      console.log("jwt -token succus id info",decoded);
       req.user = decoded;
       next();
     })
