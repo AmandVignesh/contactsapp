@@ -20,9 +20,18 @@ export async function createContact(req, res) {
     
     const user_id = req.user.user.id;
     
-    const contact = await ContactModel.create({ user_id, name, email, phone, });
+    const if_phone = await ContactModel.findOne({phone, user_id})
+    
+    if(!if_phone){
+      const contact = await ContactModel.create({ user_id, name, email, phone, });
+      res.status(201).json(contact);
+    }
+    else{
+      res.status(400).json({message: "Phone number already exists"})
+    }
+    
 
-    res.status(201).json(contact);
+    
   } catch (error) {
     res.status(500).json({ message: "Something went wrong", error });
   }
@@ -56,7 +65,6 @@ export async function updateContact(req, res) {
       { name, email, phone },
       { new: true }
     );
-    
 
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
