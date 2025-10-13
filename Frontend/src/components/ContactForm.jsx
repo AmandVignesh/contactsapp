@@ -4,6 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const ContactForm = ({ contact, onSave, onClose ,showNotification}) => {
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -21,7 +22,20 @@ const ContactForm = ({ contact, onSave, onClose ,showNotification}) => {
   }, [contact]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    
+    const value = e.target.value;
+    if (e.target.name === 'phone'){
+      if (/^\d*$/.test(value)) {
+        setFormData({ ...formData, [e.target.name]: value });
+        if (value.length === 10) {
+          setError(""); 
+        } else {
+          setError("Phone number must be 10 digits");
+        }
+      }
+    } else {
+      setFormData({ ...formData, [e.target.name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -105,9 +119,11 @@ const ContactForm = ({ contact, onSave, onClose ,showNotification}) => {
             <label htmlFor="phone" className="text-gray-800">Phone:</label>
             <input
               id="phone"
-              type="text"
+              type="tel"
               name="phone"
-              placeholder="Phone"
+              placeholder="Enter 10-digit phone"
+              minLength={10}
+              maxLength={10}
               value={formData.phone}
               onChange={handleChange}
               className="w-full border px-3 py-2 rounded-lg mt-2"
@@ -115,7 +131,7 @@ const ContactForm = ({ contact, onSave, onClose ,showNotification}) => {
             />
           </div>
           
-
+          {error && <p className="text-red-500">{error}</p>}
           <button
             type="submit"
             className="flex items-center justify-center w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"

@@ -35,7 +35,8 @@ export default function LoginPage() {
         setErrors({ general: data.message || "Login failed" });
       } else {
         const JwtToken = data.jwt_token;
-        console.log(JwtToken);
+        const user_details = JSON.stringify(data.existingUser)
+        Cookies.set("existing_user",user_details, {expires: 30})
         Cookies.set("jwt_token", JwtToken, { expires: 30 });
         navigate("/");
       }

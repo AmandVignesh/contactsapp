@@ -38,7 +38,7 @@ export async function loginUser(req, res) {
                 id:existingUser._id
             },
         },process.env.SECRET_KEY,{expiresIn:"1d"})
-            res.status(200).json({jwt_token})
+            res.status(200).json({jwt_token, existingUser})
             
             }
     } catch (e) {

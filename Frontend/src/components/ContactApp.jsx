@@ -19,9 +19,16 @@ const ContactApp = () => {
   const [deletingIds, setDeletingIds] = useState(new Set());
   const [notification, setNotification] = useState(null);
   const [loading, setLoading] = useState(false)
+  const [isProfileOpen, setIsProfileOpen] = useState(false)
   const navigate = useNavigate();
   const contactsPerPage = 6;
-
+  const user_details = Cookies.get("existing_user")
+  let user_details1 = null
+  if(user_details){
+     user_details1 = JSON.parse(user_details)
+  }
+  const two_words_name = user_details1.username
+  const intials = two_words_name.split(" ").map(word => word[0]).join("").toUpperCase()
   const filteredContacts = allContacts.filter((contact) => {
     if (!searchTerm) return true;
     const searchLower = searchTerm.toLowerCase();
@@ -159,7 +166,7 @@ const ContactApp = () => {
       )}
 
       <div className="max-w-6xl mx-auto p-6">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-8"  onMouseLeave={()=>setIsProfileOpen(false)}>
           <div>
             <h1 className="text-4xl p-2 font-serif font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Contact Manager
@@ -183,13 +190,34 @@ const ContactApp = () => {
                 <span className="hidden md:block">Add Contact</span>
                 
                 </button>
-              <button
-                onClick={handleLogout}
-                className="bg-red-500 text-white px-6 py-3 rounded-xl hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 transition-all duration-300 inline-flex items-center font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
-              >
-                <LogOut className="h-5 w-4" />
-                <span className="hidden md:block">Logout</span>
-                </button>
+
+                <div className="flex rounded-sm items-center space-x-4">
+                  <div className="relative">
+                    <button onMouseEnter={()=>setIsProfileOpen(true)} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                      <div className="bg-blue-500 h-[40px] w-[40px] rounded-[20px] flex items-center justify-center"><p className="text-white">{intials}</p></div>
+                      <div className="text-lg font-medium text-gray-900"><p className="font-serif">{user_details1.username}</p></div>
+                    </button>
+                  </div>
+                  {isProfileOpen && (
+                      <div className="absolute right-8 top-18 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50" onMouseEnter={() => setIsProfileOpen(true)} onMouseLeave={() => setIsProfileOpen(false)}>
+                        <div className="px-4 py-3 border-b border-gray-200">
+                          <h1 className="text-xl">{user_details1.username}</h1>
+                          <h1 className="text-lg">{user_details1.email}</h1>
+                        </div>
+                        <div className="border-t border-gray-200 mt-2">
+                          <button
+                            onClick={handleLogout}
+                            className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                          >
+                            <LogOut className="h-5 w-4" />
+                            <span>Logout</span>
+                          </button>
+                        </div>
+                    </div>
+                  )}
+                  
+                </div>
+              
           </div>
           
         </div>
