@@ -24,5 +24,5 @@ const ContactSchema = new mongoose.Schema(
         timestamps: true
     }
 )
-
+ContactSchema.index({ user_id: 1, phone: 1 }, { unique: true });
 export const ContactModel = mongoose.model("Contact", ContactSchema)

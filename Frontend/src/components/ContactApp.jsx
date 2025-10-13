@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Plus, Check, LogOut } from "lucide-react";
+import { Plus, Check, LogOut , X} from "lucide-react";
 import Loading from "./Loading";
 import ContactCard from "./ContactCard";
 import ContactForm from "./ContactForm";
@@ -152,7 +152,7 @@ const ContactApp = () => {
           }`}
         >
           <div className="flex items-center space-x-2">
-            <Check className="h-5 w-5" />
+            {notification.type==="success"? <Check  className="h-5 w-5"/> : <X className="h-5 w-5"/> }
             <span className="font-medium">{notification.message}</span>
           </div>
         </div>
@@ -239,6 +239,7 @@ const ContactApp = () => {
             contact={editingContact}
             onSave={saveContact}
             onClose={closeForm}
+            showNotification={showNotification}
           />
         )}
         <p className="text-gray-600 mt-2 text-lg text-end">

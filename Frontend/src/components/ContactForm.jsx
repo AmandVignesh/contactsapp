@@ -3,7 +3,7 @@ import { X, Save } from "lucide-react";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const ContactForm = ({ contact, onSave, onClose }) => {
+const ContactForm = ({ contact, onSave, onClose ,showNotification}) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -34,21 +34,30 @@ const ContactForm = ({ contact, onSave, onClose }) => {
       if (contact) {
         
         response = await axios.put(
-          `https://contactapp-6siq.onrender.com/api/contacts/${contact._id}`,
+          `http://localhost:5000/api/contacts/${contact._id}`,
           formData,
           { headers: { Authorization: `Bearer ${token}` } }
         );
+        console.log(response)
       } else {
         response = await axios.post(
-          "https://contactapp-6siq.onrender.com/api/contacts",
+          "http://localhost:5000/api/contacts",
           formData,
           { headers: { Authorization: `Bearer ${token}` } }
         );
+        console.log(response)
+        
       }
+      if (!response.data.created){
+          showNotification("Phone number already exists", "failure")
+      }
+      else{
+        onSave(response.data.contact || response.data);
+        onClose();
+      }
+      
 
-      onSave(response.data.contact || response.data);
-
-      onClose();
+      
     } catch (error) {
       console.error("Error saving contact", error);
     }
