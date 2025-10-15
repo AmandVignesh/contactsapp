@@ -167,20 +167,29 @@ const ContactApp = () => {
         </div>
       )}
 
-      <div className="max-w-6xl mx-auto p-6">
-        <div className="flex flex-col  mb-8 bg-white p-5 rounded-lg"  onMouseLeave={()=>setIsProfileOpen(false)}>
+      <div className="md:max-w-6xl mx-auto p-3 md:p-6 ">
+        <div className="flex flex-col mb-6  md:mb-8 bg-white p-5 rounded-lg mt-4"  onMouseLeave={()=>setIsProfileOpen(false)}>
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl p-2 font-serif font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <h1 className="text-[25px] md:text-4xl pr-2 font-serif md:font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Contact Manager
               </h1>
-              <p className="text-gray-600 font-semibold mt-2 text-lg">Organize and manage your contacts efficiently</p>
+              <p className="text-gray-600 font-semibold mt-2 text-[12px] md:text-lg">Organize and manage your contacts efficiently</p>
             </div>
-            <div className="flex gap-6 items-center">
+            <div className="flex flex-col md:flex-row gap-2 md:gap-6 items-center">
+              <div className="flex rounded-sm items-center space-x-4">
+                  <div className="relative">
+                    <button onMouseEnter={()=>setIsProfileOpen(true)} className="flex items-center rounded-lg hover:bg-gray-100 transition-colors">
+                      <div className="bg-blue-500 h-[40px] w-[40px] rounded-[20px] flex items-center justify-center"><p className="text-white">{intials}</p></div>
+                      <div className="text-lg font-medium text-gray-900 "><p className="font-serif hidden">{user_details1.username}</p></div>
+                    </button>
+                  </div>
+                  
+              </div>
               <button
                 onClick={addNewContact}
-                className="w-full sm:w-auto flex items-center justify-center gap-2 
-                            px-4 py-2 
+                className="w-full  sm:w-auto flex items-center justify-center gap-2 
+                            md:px-4 py-1 md:py-2 
                             text-sm sm:text-base md:text-lg font-semibold 
                             text-white rounded-lg 
                             bg-gradient-to-r from-blue-600 to-purple-600 
@@ -188,21 +197,13 @@ const ContactApp = () => {
                             focus:outline-none focus:ring-2 sm:focus:ring-4 focus:ring-blue-300 
                             shadow-md hover:shadow-lg transition transform hover:scale-105"
                 >
-
                 <Plus className="w-5 h-7" />
-                <span className="hidden md:block">Add Contact</span>
-                
+                <span className="hidden md:block">Add Contact</span>        
                 </button>
-
-                <div className="flex rounded-sm items-center space-x-4">
-                  <div className="relative">
-                    <button onMouseEnter={()=>setIsProfileOpen(true)} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                      <div className="bg-blue-500 h-[40px] w-[40px] rounded-[20px] flex items-center justify-center"><p className="text-white">{intials}</p></div>
-                      <div className="text-lg font-medium text-gray-900"><p className="font-serif">{user_details1.username}</p></div>
-                    </button>
-                  </div>
-                  {isProfileOpen && (
-                      <div className="absolute right-8 top-18 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50" onMouseEnter={() => setIsProfileOpen(true)} onMouseLeave={() => setIsProfileOpen(false)}>
+              
+            </div>
+            {isProfileOpen && (
+                      <div className="absolute right-10 md:right-53 top-22 md:top-30 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50" onMouseEnter={() => setIsProfileOpen(true)} onMouseLeave={() => setIsProfileOpen(false)}>
                         <div className="px-4 py-3 border-b border-gray-200">
                           <h1 className="text-xl">{user_details1.username}</h1>
                           <h1 className="text-lg">{user_details1.email}</h1>
@@ -218,17 +219,12 @@ const ContactApp = () => {
                         </div>
                     </div>
                   )}
-                  
-                </div>
-              
-            </div>
           </div>
-          <div className="pt-10">
+          <div className="pt-3 md:pt-10">
             {allContacts.length > 0 && (
             <SearchFilter
               searchTerm={searchTerm}
               onSearchChange={setSearchTerm}
-              onClear={() => setSearchTerm("")}
               contactCount={filteredContacts.length}
             />
           )}

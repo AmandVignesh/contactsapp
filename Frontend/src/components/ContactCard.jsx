@@ -114,7 +114,7 @@ const ContactCard = ({
         <div className="relative">
 
           { contact.profileImage==="https://via.placeholder.com/150" ? 
-          <div class="w-[70px] h-[70px] rounded-full bg-gradient-to-br from-[#667eea] to-[#764ba2] flex items-center justify-center flex-shrink-0 relative" onClick={() => setShowPopup((prev) => !prev)}>
+          <div className="w-[70px] h-[70px] rounded-full bg-gradient-to-br from-[#667eea] to-[#764ba2] flex items-center justify-center flex-shrink-0 relative" onClick={() => setShowPopup((prev) => !prev)}>
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
             </svg>
