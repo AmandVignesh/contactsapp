@@ -51,9 +51,7 @@ const ContactApp = () => {
     setCurrentPage(1);
   }, [searchTerm]);
 
-  useEffect(() => {
-    setLoading(true)
-    const fetchContacts = async () => {
+  const fetchContacts = async () => {
       try {
         const token = Cookies.get("jwt_token");
         const response = await fetch("https://contactapp-6siq.onrender.com/api/contacts", {
@@ -69,6 +67,10 @@ const ContactApp = () => {
       }
       setLoading(false)
     };
+
+  useEffect(() => {
+    setLoading(true)
+    
 
     fetchContacts();
   }, []);
@@ -149,7 +151,7 @@ const ContactApp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-[#667eea] to-[#764ba2]">
       {notification && (
         <div
           className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-xl shadow-lg transition-all duration-500 transform ${
@@ -166,14 +168,15 @@ const ContactApp = () => {
       )}
 
       <div className="max-w-6xl mx-auto p-6">
-        <div className="flex items-center justify-between mb-8"  onMouseLeave={()=>setIsProfileOpen(false)}>
-          <div>
-            <h1 className="text-4xl p-2 font-serif font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Contact Manager
-            </h1>
-            <p className="text-gray-600 font-semibold mt-2 text-lg">Organize and manage your contacts efficiently</p>
-          </div>
-          <div className="flex gap-6 items-center">
+        <div className="flex flex-col  mb-8 bg-white p-5 rounded-lg"  onMouseLeave={()=>setIsProfileOpen(false)}>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl p-2 font-serif font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Contact Manager
+              </h1>
+              <p className="text-gray-600 font-semibold mt-2 text-lg">Organize and manage your contacts efficiently</p>
+            </div>
+            <div className="flex gap-6 items-center">
               <button
                 onClick={addNewContact}
                 className="w-full sm:w-auto flex items-center justify-center gap-2 
@@ -218,18 +221,22 @@ const ContactApp = () => {
                   
                 </div>
               
+            </div>
+          </div>
+          <div className="pt-10">
+            {allContacts.length > 0 && (
+            <SearchFilter
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              onClear={() => setSearchTerm("")}
+              contactCount={filteredContacts.length}
+            />
+          )}
           </div>
           
         </div>
 
-        {allContacts.length > 0 && (
-          <SearchFilter
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            onClear={() => setSearchTerm("")}
-            contactCount={filteredContacts.length}
-          />
-        )}
+        
 
         {loading ? <Loading/>: allContacts.length === 0 && <EmptyState onAddContact={addNewContact} />}
 
@@ -249,7 +256,8 @@ const ContactApp = () => {
                   onEdit={editContact}
                   onDelete={deleteContact}
                   isDeleting={deletingIds.has(contact._id)}
-                  
+                  showNotification={showNotification}
+                  fetchContacts={fetchContacts}
                 />
               ))}
             </div>
@@ -270,7 +278,7 @@ const ContactApp = () => {
             showNotification={showNotification}
           />
         )}
-        <p className="text-gray-600 mt-2 text-lg text-end">
+        <p className="text-white font-serif mt-2 text-lg text-end">
               {allContacts.length > 0
                 ? `${allContacts.length} contact${
                     allContacts.length !== 1 ? "s" : ""

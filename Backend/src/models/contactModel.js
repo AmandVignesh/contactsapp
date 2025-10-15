@@ -18,6 +18,10 @@ const ContactSchema = new mongoose.Schema(
         phone:{
             type: String,
             required: true
+        },
+        profileImage: {
+            type: String,
+            default: "https://via.placeholder.com/150"
         }
     },
     {

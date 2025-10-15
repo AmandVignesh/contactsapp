@@ -1,5 +1,8 @@
 
 import { ContactModel } from "../models/contactModel.js";
+import multer, { diskStorage } from "multer";
+import path from "path";
+import fs from "fs";
 
 export async function getContacts(req, res) {
   try {
@@ -40,7 +43,7 @@ export async function specificContact(req, res) {
   try {
     const contact = await ContactModel.findOne({
       _id: req.params.id,
-      user_id: req.user.id,
+      user_id: req.user.user.id,
     });
 
     if (!contact) {
@@ -117,3 +120,76 @@ export async function deleteContact(req, res) {
     res.status(500).json({ message: "Something went wrong", error });
   }
 }
+
+
+// --------------- PROFILE IMAGE UPLOAD ---------------
+
+const uploadDir = path.resolve("uploads");
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadDir),
+  filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
+});
+
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
+  allowedTypes.includes(file.mimetype)
+    ? cb(null, true)
+    : cb(new Error("Only image files are allowed"), false);
+};
+
+export const upload = multer({ storage, fileFilter });
+
+
+// ✅ Upload or change profile image
+export const uploadProfileImage = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user_id = req.user.user.id;
+    let updateData = {};
+
+    // Case 1: if a file was uploaded
+    if (req.file) {
+      updateData.profileImage = `/uploads/${req.file.filename}`;
+    }
+    // Case 2: if JSON body contains "profileImage": null (means remove)
+    else if (req.body && req.body.profileImage === null) {
+      updateData.profileImage = "https://via.placeholder.com/150";
+    }
+
+    // 🗑 If removing image, delete the old file from /uploads folder
+    if (req.body && req.body.profileImage === null) {
+      const contact = await ContactModel.findOne({ _id: id, user_id });
+      if (contact && contact.profileImage && contact.profileImage.startsWith("/uploads/")) {
+        const oldPath = path.join(process.cwd(), contact.profileImage);
+        fs.unlink(oldPath, (err) => {
+          if (err) console.log("Error deleting old image:", err);
+        });
+      }
+    }
+
+    // Update the contact in DB
+    const updatedContact = await ContactModel.findOneAndUpdate(
+      { _id: id, user_id },
+      updateData,
+      { new: true }
+    );
+
+    if (!updatedContact)
+      return res.status(404).json({ message: "Contact not found" });
+
+    const message = req.file
+      ? "Profile image updated successfully"
+      : req.body.profileImage === null
+      ? "Profile image removed successfully"
+      : "No image uploaded";
+
+    res.status(200).json({
+      message,
+      contact: updatedContact,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error uploading image", error: err });
+  }
+};

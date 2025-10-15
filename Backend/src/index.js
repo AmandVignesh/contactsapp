@@ -2,7 +2,7 @@ import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
 import { connectDB } from "./config/db.js"
-
+import path from "path"
 import route from "./routes/userRouter.js"
 import contact from "./newroute.js"
 dotenv.config()
@@ -16,6 +16,7 @@ const PORT =  process.env.PORT || 5000
 
 const url = process.env.MONGO_URL
 
+app.use("/uploads", express.static(path.resolve("uploads")));
 app.use("/api/users", route)
 app.use("/api/contacts",contact)
 
