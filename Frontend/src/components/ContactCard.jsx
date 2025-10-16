@@ -135,21 +135,21 @@ const ContactCard = ({
             >
               { contact.profileImage=== "https://via.placeholder.com/150"? <button
                 onClick={() => fileInputRef.current.click()}
-                className="w-full px-3 py-2 text-sm text-left hover:bg-gray-100 flex items-center gap-2"
+                className="w-full px-3 py-2 text-sm text-left hover:bg-blue-500 hover:text-white flex items-center gap-2"
               >
                 <Upload size={16} /> Upload Image
               </button>
             :
               <button
                 onClick={handleRemoveImage}
-                className="w-full px-3 py-2 text-sm text-left text-red-600 hover:bg-red-50 flex items-center gap-2"
+                className="w-full px-3 py-2 text-sm text-left text-red-600 hover:bg-red-500 hover:text-white flex items-center gap-2"
               >
                 <Trash2 size={16} /> Remove Image
               </button>}
 
               <button
                 onClick={() => setShowPopup(false)}
-                className="w-full px-3 py-2 text-sm text-left hover:bg-gray-100 flex items-center gap-2"
+                className="w-full px-3 py-2 text-sm text-left hover:bg-gray-300 flex items-center gap-2"
               >
                 <X size={16} /> Cancel
               </button>
