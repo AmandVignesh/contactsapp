@@ -131,7 +131,7 @@ const ContactCard = ({
           {showPopup && (
             <div
               ref={popupRef}
-              className="absolute z-[9999] top-20 mt-2 w-40 bg-white border rounded-lg shadow-lg right-0 left-20"
+              className="absolute z-[9999] top-20 mt-2 w-40 bg-white  rounded-lg shadow-xl right-0 left-20"
             >
               { contact.profileImage=== "https://via.placeholder.com/150"? <button
                 onClick={() => fileInputRef.current.click()}
