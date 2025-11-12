@@ -122,7 +122,7 @@ export async function deleteContact(req, res) {
 }
 
 
-// --------------- PROFILE IMAGE UPLOAD ---------------
+
 
 const uploadDir = path.resolve("uploads");
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
@@ -142,23 +142,23 @@ const fileFilter = (req, file, cb) => {
 export const upload = multer({ storage, fileFilter });
 
 
-// ✅ Upload or change profile image
+
 export const uploadProfileImage = async (req, res) => {
   try {
     const { id } = req.params;
     const user_id = req.user.user.id;
     let updateData = {};
 
-    // Case 1: if a file was uploaded
+    
     if (req.file) {
       updateData.profileImage = `/uploads/${req.file.filename}`;
     }
-    // Case 2: if JSON body contains "profileImage": null (means remove)
+    
     else if (req.body && req.body.profileImage === null) {
       updateData.profileImage = "https://via.placeholder.com/150";
     }
 
-    // 🗑 If removing image, delete the old file from /uploads folder
+    
     if (req.body && req.body.profileImage === null) {
       const contact = await ContactModel.findOne({ _id: id, user_id });
       if (contact && contact.profileImage && contact.profileImage.startsWith("/uploads/")) {
@@ -169,7 +169,7 @@ export const uploadProfileImage = async (req, res) => {
       }
     }
 
-    // Update the contact in DB
+    
     const updatedContact = await ContactModel.findOneAndUpdate(
       { _id: id, user_id },
       updateData,
